@@ -5,3 +5,5 @@ edition = "2024"
 
 [dependencies]
 ics="0.5.8"
+# Arg parsing
+clap = { version = "4.5", features = ["derive"] }
