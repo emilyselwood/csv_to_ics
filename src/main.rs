@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use clap::{Parser, command};
+use clap::Parser;
 use ics::{
     Event, ICalendar,
     properties::{Description, DtEnd, DtStart, Summary},
