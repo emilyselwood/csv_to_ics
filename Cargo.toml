@@ -2,7 +2,6 @@
 name = "csv_to_ics"
 version = "1.0.0"
 edition = "2024"
-license = "HIPPOCRATIC LICENSE"
 license-file = "LICENSE.md"
 
 description = "A command line tool to convert a csv file of events to an ics file"
