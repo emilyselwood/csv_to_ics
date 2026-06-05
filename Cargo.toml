@@ -1,7 +1,14 @@
 [package]
 name = "csv_to_ics"
-version = "0.1.0"
+version = "1.0.0"
 edition = "2024"
+license-file = "LICENSE.md"
+
+description = "A command line tool to convert a csv file of events to an ics file"
+keywords = ["csv", "ics", "convert"]
+
+readme = "README.md"
+repository = "https://github.com/emilywselwood/"
 
 [dependencies]
 ics="0.5.8"
