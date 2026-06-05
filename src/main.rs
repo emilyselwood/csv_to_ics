@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use clap::{Parser, command};
+use clap::Parser;
 use ics::{
     Event, ICalendar,
     properties::{Description, DtEnd, DtStart, Summary},
@@ -68,7 +68,7 @@ fn extract(source: &Vec<char>, start: usize, end: usize) -> String {
             source.len()
         );
     }
-    return source[start..end].iter().collect::<String>();
+    source[start..end].iter().collect::<String>()
 }
 
 fn build_header_map(csv_data: &CSVData) -> HashMap<&str, Option<usize>> {
@@ -123,7 +123,7 @@ fn build_header_map(csv_data: &CSVData) -> HashMap<&str, Option<usize>> {
 
 fn get_field(
     name: &str,
-    row: &Vec<String>,
+    row: &[String],
     heading_mapping: &HashMap<&str, Option<usize>>,
 ) -> Option<String> {
     heading_mapping
@@ -149,9 +149,9 @@ fn main() {
         if name.is_none() || start_date.is_none() || start_time.is_none() {
             println!(
                 "Row Missing required field Name: '{}' Start_date: '{}' start_time: '{}'",
-                name.or(Some("".to_string())).unwrap(),
-                start_date.or(Some("".to_string())).unwrap(),
-                start_time.or(Some("".to_string())).unwrap()
+                name.unwrap_or("".to_string()),
+                start_date.unwrap_or("".to_string()),
+                start_time.unwrap_or("".to_string())
             );
             continue;
         }

@@ -9,9 +9,9 @@ pub struct CSVData {
 }
 
 enum CSVState {
-    InSeparator,
-    InRecord,
-    InQuotes,
+    Separator,
+    Record,
+    Quotes,
 }
 
 const CSV_SEPARATOR: u8 = b',';
@@ -36,30 +36,30 @@ pub fn parse_csv(buffer: &[u8]) -> CSVData {
     let mut headers = Vec::new();
 
     let mut i = 0;
-    let mut state = CSVState::InSeparator;
+    let mut state = CSVState::Separator;
     let mut in_header: bool = true;
     let mut record_buffer = "".to_owned();
     let mut line_buffer: Vec<String> = Vec::new();
 
     while i < buffer.len() {
         match state {
-            CSVState::InSeparator => {
+            CSVState::Separator => {
                 if !buffer[i].is_ascii_whitespace() || buffer[i] == CSV_NEWLINE {
-                    state = CSVState::InRecord
+                    state = CSVState::Record
                 } else {
                     i += 1;
                 }
             }
-            CSVState::InRecord => {
+            CSVState::Record => {
                 if buffer[i] == CSV_SEPARATOR {
                     if !record_buffer.is_empty() {
                         line_buffer.push(record_buffer);
                         record_buffer = "".to_owned();
                     }
-                    state = CSVState::InSeparator;
+                    state = CSVState::Separator;
                     i += 1;
                 } else if buffer[i] == CSV_QUOTE {
-                    state = CSVState::InQuotes;
+                    state = CSVState::Quotes;
                     i += 1;
                 } else if buffer[i] == CSV_NEWLINE {
                     if !record_buffer.is_empty() {
@@ -83,9 +83,9 @@ pub fn parse_csv(buffer: &[u8]) -> CSVData {
                     i += 1;
                 }
             }
-            CSVState::InQuotes => {
+            CSVState::Quotes => {
                 if buffer[i] == CSV_QUOTE {
-                    state = CSVState::InRecord;
+                    state = CSVState::Record;
                     i += 1;
                 } else {
                     record_buffer.push(buffer[i].into());
@@ -101,12 +101,7 @@ pub fn parse_csv(buffer: &[u8]) -> CSVData {
         data.push(line_buffer);
     }
 
-    let result = CSVData {
-        headers: headers,
-        data: data,
-    };
-
-    result
+    CSVData { headers, data }
 }
 
 #[cfg(test)]
